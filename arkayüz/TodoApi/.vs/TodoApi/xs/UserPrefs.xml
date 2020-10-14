@@ -1,28 +1,24 @@
 ﻿<Properties StartupConfiguration="{1C6A23E3-E6A3-41ED-A13E-7E3C1FADC8B4}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Startup.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/gorevController.cs">
     <Files>
-      <File FileName="Models/birim.cs" Line="17" Column="6" />
-      <File FileName="Models/TodoContext.cs" />
+      <File FileName="Controllers/gorevController.cs" Line="79" Column="19" IsPinned="True" />
       <File FileName="Models/kullanici_gorev.cs" />
+      <File FileName="Models/gorev.cs" />
+      <File FileName="TodoApi20200818171548 (1).PublishSettings" />
+      <File FileName="Models/kullanici.cs" />
+      <File FileName="Controllers/kullanici_gorevController.cs" />
+      <File FileName="Controllers/kullaniciController.cs" />
+      <File FileName="Properties/launchSettings.json" />
       <File FileName="appsettings.json" />
       <File FileName="Program.cs" />
-      <File FileName="Properties/launchSettings.json" />
-      <File FileName="Startup.cs" Line="57" Column="1" />
       <File FileName="Models/proje.cs" />
-      <File FileName="Controllers/birimController.cs" />
-      <File FileName="Models/gorev.cs" />
-      <File FileName="Models/kullanici.cs" />
       <File FileName="Models/kullanici_yetki.cs" />
+      <File FileName="Models/TodoContext.cs" />
       <File FileName="Models/yetki.cs" />
-      <File FileName="Controllers/gorevController.cs" Line="1" Column="1" />
-      <File FileName="Controllers/kullaniciController.cs" />
-      <File FileName="Properties/PublishProfiles/newTodoApi - Web Deploy.pubxml" />
-      <File FileName="Properties/PublishProfiles/TodoApi20200818171548 - Web Deploy.pubxml" />
-      <File FileName="Properties/PublishProfiles/todoApiTest1 - Web Deploy.pubxml" />
-      <File FileName="Controllers/kullanici_gorevController.cs" />
+      <File FileName="Controllers/birimController.cs" />
+      <File FileName="Models/birim.cs" />
       <File FileName="Controllers/projeController.cs" />
-      <File FileName="Controllers/kullanici_yetkiController.cs" />
-      <File FileName="Controllers/yetkiController.cs" />
+      <File FileName="Startup.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -33,12 +29,13 @@
                 <Node name="FrameworkReferences" expanded="True" />
                 <Node name="PackageDependencies" expanded="True" />
               </Node>
-              <Node name="Controllers" expanded="True" />
+              <Node name="Controllers" expanded="True">
+                <Node name="gorevController.cs" selected="True" />
+              </Node>
               <Node name="Models" expanded="True" />
               <Node name="Properties" expanded="True">
                 <Node name="PublishProfiles" expanded="True" />
               </Node>
-              <Node name="Startup.cs" selected="True" />
             </Node>
           </Node>
         </State>

@@ -1,30 +1,37 @@
 import React, { useContext } from 'react'
 import {Form, Button} from 'react-bootstrap'
-import {gorevlerContext} from './Store'
-import {kullanicilarContext} from './Store'
+import {gorevlerContext} from '../Store'
+import {kullanicilarContext, aktifKullaniciContext} from '../Store'
+import Navigation3 from '../Navigation3';
+import './GorevVer.css'
+
 
  function Gorevver () {
     const [gorevler, setGorevler] = useContext(gorevlerContext);
     const [kullanicilar] = useContext(kullanicilarContext);
-/*
-    const findId = m =>{
-        var x = 0;
-        for(var i = 0; i < gorevler.length; i++){
-            if(x <= gorevler[i].gorev_id){
-                x = gorevler[i].gorev_id
-            }
-        }
-        x++;
-        return x
-    }
-    */
+    const [  aktifKullanici, setAktifKullanici] = useContext(aktifKullaniciContext);
+    
+      
+    function findId (m){
+        var x = 1;
+        console.log(gorevler.length)
+        for(var i = 0; i < gorevler.size; i++){
+           /* if(x < gorevler[i].id){
+                x = gorevler[i].id
+            }*/
+            x= x+1;
+      
+        }  
+        return parseInt(x); 
+      }
+    
 
     const handleInputChange = event => {
         const { name, value } = event.target;
         setGorevler({ ...gorevler, [name]: value });
     };
 
-    /*
+    
     
 
     function sayiyiAl(metin){
@@ -35,31 +42,35 @@ import {kullanicilarContext} from './Store'
     
         return  parseInt(istenenKisim)
     }
-*/
+
 
  /// GÖREV EKLE
  
-    const handleSubmit = e => {
-        console.log("veriliyor")
-        fetch('https://todoapi20200818171548.azurewebsites.net/api/gorev', {
-            method:'POST',
-            headers:{
-                'Accept':'application/json',
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({
-                gorev_id:111,
-                aciklama:"denemeeee",//gorevler.gorevaciklama,
-                ad:"denemeeee",//gorevler.gorev_adi,
-                proje_id: 1,
-                aktif_kullanici_id:111/*sayiyiAl(gorevler.kisi)*/,
-                baslangic_trh : "2020-07-03", //gorevler.baslangictarihi,
-                bitis_trh: "2020-07-03",// gorevler.bitistarihi,
-                bitimi: false,
-            })
+ const handleSubmit = e => {
+    console.log("görev ekle")
+    fetch('https://localhost:44358/api/gorev/atama', {
+        method:'POST',
+        headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+            aciklama:String (gorevler.gorevaciklama),
+            ad:String (gorevler.gorev_adi),
+            aktif_kullanici_id:sayiyiAl(gorevler.kisi),
+            baslangic_trh : gorevler.baslangictarihi,
+            bitis_trh: gorevler.bitistarihi,
+            bitimi: false,
         })
-            .then(res => res.JSON())
-    }
+    })
+        .then(res => res.JSON())
+        /*.catch(error => {
+            console.log(error)
+            window.alert(error)
+        })*/
+        
+    console.log("görev son")
+}
 
 
     
@@ -68,6 +79,8 @@ import {kullanicilarContext} from './Store'
     return (
         
         <div>
+            <Navigation3/>
+            <div className="baslik">
             <Form onSubmit={() => {handleSubmit()}}>
                 <br/>
                 <Form.Group>
@@ -78,13 +91,24 @@ import {kullanicilarContext} from './Store'
                     <Form.Control as="textarea" rows="6" placeholder="Görev Açıklaması" name="gorevaciklama" onChange={handleInputChange}/>
                 </Form.Group>
                 <br/>
-                <Form.Group controlId="exampleForm.ControlSelect1" name="kisi" onChange={handleInputChange}>
+                <Form.Group controlId="exampleForm.ControlSelect1" name="kisi" defaultValue=" " onChange={handleInputChange}>
                     <Form.Label color="red" >Görev Gönderilecek Kişiyi Seçin</Form.Label>
                     <Form.Control as="select" name="kisi"  >
+                    <option></option>
                         {
-                            kullanicilar.map(kullanici => (
-                            <option name={kullanici.kullanici_id} key ={kullanici.kullanici_id}> {kullanici.ad} {kullanici.soyadi} ({kullanici.kullanici_id})</option>
-                            ))
+                            
+                            kullanicilar.map(kullanici => {
+
+                                if(kullanici.aktif   || kullanici.yetki_id ==1){
+
+                                }else {
+                                    return(
+                                        <option name={kullanici.kullanici_id} key ={kullanici.kullanici_id}> {kullanici.ad} {kullanici.soyadi} ({kullanici.kullanici_id})</option>
+                                    )
+                                }
+
+                            }
+                            )
                         }
                     </Form.Control>
                 </Form.Group>
@@ -101,7 +125,7 @@ import {kullanicilarContext} from './Store'
             </Form>
 
         </div>
-
+        </div>
     )
 }
 

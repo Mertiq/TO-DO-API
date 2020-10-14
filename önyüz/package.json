@@ -14,7 +14,9 @@
     "react-modal": "^3.11.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
-    "scheduler": "^0.14.0"
+    "react-uuid": "^1.0.2",
+    "scheduler": "^0.14.0",
+    "uuid": "^8.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

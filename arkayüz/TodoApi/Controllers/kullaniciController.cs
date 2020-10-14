@@ -73,6 +73,42 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
+        [HttpPut("yetkilendir/{id}/{yetki_id}")]
+        public async Task<IActionResult> yetkilendir(long id, int yetki_id)
+        {
+
+            if (id < 4 || id >= 0)
+            {
+
+                var kullanici_yeni = await _context.kullanicilar.FindAsync(id);
+                kullanici_yeni.yetki_id = yetki_id;
+                _context.Entry(kullanici_yeni).State = EntityState.Modified;
+
+            }
+            else {
+                return BadRequest();
+            }
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!kullaniciExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+
         // POST: api/kullanici
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

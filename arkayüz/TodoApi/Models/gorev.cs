@@ -15,8 +15,8 @@ namespace TodoApi.Models
         public long gorev_id { get; set; }
         public string aciklama { get; set; }
         public string ad { get; set; }
-        public int proje_id { get; set; }
-        public int aktif_kullanici_id { get; set; }
+        public long proje_id { get; set; }
+        public long aktif_kullanici_id { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime baslangic_trh { get; set; }

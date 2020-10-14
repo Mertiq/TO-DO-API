@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
-
+using System.Text.Json;
 namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
@@ -85,6 +85,41 @@ namespace TodoApi.Controllers
             return CreatedAtAction("Getgorev", new { id = gorev.gorev_id }, gorev);
         }
 
+
+
+        // POST: api/gorev
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost("atama")]
+        public async Task<ActionResult<gorev>> atama( gorev gorev)
+        {
+            _context.gorevler.Add(gorev);
+
+            var kullanici = await _context.kullanicilar.FindAsync(gorev.aktif_kullanici_id);
+
+            var kullanici_gorev1 = new kullanici_gorev();
+            
+            kullanici_gorev1.kullanici_id = gorev.aktif_kullanici_id;
+            kullanici_gorev1.gorev_id = gorev.gorev_id;
+
+            if (kullanici.yetki_id == 2)
+            {
+                kullanici_gorev1.durum = "Kullanıcıya Atanacak";
+            }
+            else if (kullanici.yetki_id == 3)
+            {
+                kullanici_gorev1.durum = "Atandı";
+            }
+            else {
+                kullanici_gorev1.durum = "Amire Atandı";
+            }
+            kullanici_gorev1.islem_trh =DateTime.UtcNow;
+            kullanici_gorev1.atanan_birim =1;
+            _context.kullanici_grv.Add(kullanici_gorev1);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
         // DELETE: api/gorev/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<gorev>> Deletegorev(long id)
@@ -101,9 +136,19 @@ namespace TodoApi.Controllers
             return gorev;
         }
 
+
         private bool gorevExists(long id)
         {
             return _context.gorevler.Any(e => e.gorev_id == id);
+        }
+
+        [HttpGet("aktif/{aktif_kullanici_id}")]
+        public async Task<IEnumerable<gorev>> GetGorevbyactive(long aktif_kullanici_id)
+        {
+
+            var gorev = await _context.gorevler.Where(x => x.aktif_kullanici_id == aktif_kullanici_id).ToListAsync();
+            
+            return gorev;
         }
     }
 }

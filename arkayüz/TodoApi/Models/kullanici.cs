@@ -10,6 +10,7 @@ namespace TodoApi.Models
 {
     public class kullanici
     {
+      
         [Key]
         public long kullanici_id { get; set; }
         public string ad { get; set; }
@@ -18,5 +19,6 @@ namespace TodoApi.Models
         public string sifre { get; set; }
         public long birim_id { get; set; }
         public int yetki_id { get; set; }
+        public bool aktif { get; set; }
     }
 }

@@ -41,6 +41,7 @@ export default function SignIn() {
 const upmail = event => {
   setMail(event.target.value);
 };
+
 const upsifre = event => {
   setSifre(event.target.value);
 };
@@ -48,27 +49,72 @@ const upsifre = event => {
 
 
 const [kullanicilar] = useContext(kullanicilarContext); 
-const [   setAktifKullanici] = useContext(aktifKullaniciContext);
 
 const history = useHistory();
 
 
 
-  onsubmit = e =>{
-    
+
+
+
+  const aktifyap = id => {
+
+  let x = kullanicilar.map(kullanici => {
+    if(kullanici.kullanici_id === id){
+     
+        fetch(`https://todoapi20200818171548.azurewebsites.net/api/kullanici/${kullanici.kullanici_id}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        kullanici_id:kullanici.kullanici_id,
+        ad: kullanici.ad,
+        soyadi:kullanici.soyadi,
+        mail:kullanici.mail,
+        sifre :kullanici.sifre,
+        birim_id: kullanici.birim_id,
+        yetki_id:kullanici.yetki_id,
+        aktif:true
+      })
+      })
+    }
+  })
   
 
+    
+}
+  
+
+
+
+
+
+  function onsubmit  (e) {
+    
+  
+     
+      
       for(var i = 0; i<kullanicilar.length; i++){
         if(kullanicilar[i].mail === mail && kullanicilar[i].sifre === sifre){
+         
+         
           
-          setAktifKullanici(kullanicilar[i].id)
+          console.log(kullanicilar[i].yetki_id)
           if(kullanicilar[i].yetki_id === 1){
-            history.push("/app");
-          }else{
-            history.push("/calisan");
+            aktifyap(kullanicilar[i].kullanici_id)
+            history.push("/superamir/gorevler");
+          }else if(kullanicilar[i].yetki_id === 2){
+            aktifyap(kullanicilar[i].kullanici_id)
+            history.push("/amir/gorevler");
+          }else if(kullanicilar[i].yetki_id === 3){
+            aktifyap(kullanicilar[i].kullanici_id)
+            history.push("/calisan/gorevler"); 
           }
           
-        
+          
+         
         }
       }
       
@@ -86,7 +132,7 @@ const history = useHistory();
         <Typography component="h1" variant="h5">
           Giriş Yap
         </Typography>
-        <form className={classes.form}  onSubmit={onsubmit} >
+        <form className={classes.form} >
           <TextField
             variant="outlined"
             margin="normal"
@@ -117,6 +163,7 @@ const history = useHistory();
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={() => onsubmit()}
           >
             Giriş Yap
           </Button>

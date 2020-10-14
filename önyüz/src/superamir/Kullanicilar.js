@@ -1,88 +1,59 @@
 import React, {useContext, useState}from 'react'
 import {Table, Button, Form, Modal, Row, Col} from 'react-bootstrap'
-import {kullanicilarContext} from './Store'
+import {kullanicilarContext} from '../Store'
+import Navigation from '../Navigation';
+import './Gorevler.css'
 
 function Kullanicilar () {
 
     const [kullanicilar] = useContext(kullanicilarContext);
 
     const [show, setShow] = useState(false);
-    const [id, setId] = useState();
     const [rutbeId, setrutbeId] = useState(0);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const [rutbe, setrutbe] = useState("");
 
-    const [ad, setad] = useState("");
-    const [soyadi, setsoyadi] = useState("");
-    const [mail, setmail] = useState("");
-    const [sifre, setsifre] = useState("");
-    const [birim_id, setbirim_id] = useState();
+    
+    const [x, setx] = useState();
     
 
     const handleInputChange = event => {
-        const { name, value } = event.target;
-        setrutbe({ ...rutbe, [name]: value });
+        var a = event.target.value
+        if(a === "Amir"){
+            setrutbeId(2);
+        }
+        if(a === "Çalışan"){
+            setrutbeId(3);
+        }
+        console.log(rutbeId)
         };
 
+
     const modalAc = e => {
+        
+        setx(e)
+        console.log(e)
         handleShow();
-        let x = kullanicilar.map(kullanici => {
-            if(kullanici.kullanici_id === e){
-                setId(kullanici.kullanici_id); ////// kontrol et
-                setad(kullanici.ad);
-                setsoyadi(kullanici.soyadi);
-                setmail(kullanici.mail);
-                setsifre(kullanici.sifre);
-                setbirim_id(kullanici.birim_id);
-            }
-            return id;
-        })
-        return x;
+        
+        
     }
 
     const yetkilendir = e => {
-        if(rutbe.rutbe === "Amir"){
-            setrutbeId(2);
-        }
-        if(rutbe.rutbe === "Çalışan"){
-            setrutbeId(3);
-        }
-        bilgiAl(id);
-        Guncelle(id);
+        
+        
+    fetch(`https://todoapi20200818171548.azurewebsites.net/api/kullanici/yetkilendir/${x}/${rutbeId}`, {
+        method: 'PUT'
+       
+        })
+        
+       
     }
 
-    const bilgiAl = id => {
-        for (var i = 0; i < kullanicilar.length; i++){
-            if(id === kullanicilar[i].kullanici_id){
-                setad(kullanicilar[i].ad);
-                setsoyadi(kullanicilar[i].soyadi);
-                setmail(kullanicilar[i].mail);
-                setsifre(kullanicilar[i].sifre);
-                setbirim_id(kullanicilar[i].birim_id);
-            }
-        }
-    }
+    
 
-    const Guncelle = id => {
-        fetch(`https://todoapi20200818171548.azurewebsites.net/api/kullanici/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                kullanici_id:id,
-                ad: ad,
-                soyadi:soyadi,
-                mail:mail,
-                sifre :sifre,
-                birim_id: birim_id,
-                yetki_id:rutbeId
-            })
-            })
-    }
+    
 
     function yetkii(x){
         if(x === 0){
@@ -100,6 +71,8 @@ function Kullanicilar () {
     
         return (
             <div>
+                <Navigation/>
+                <div className="genel">
                     <Table className="mt-4" stripped="true" bordered hover size="sm">
                         <thead>
                             <tr>
@@ -141,6 +114,7 @@ function Kullanicilar () {
                                     <Form>
                                         <Form.Group name="rutbe" onChange={handleInputChange}>
                                             <Form.Control as="select" size="lg">
+                                                <option></option>
                                                 <option>Amir</option>
                                                 <option>Çalışan</option>
                                             </Form.Control>
@@ -154,11 +128,12 @@ function Kullanicilar () {
 
                         </Modal.Body>
                         <Modal.Footer>
-                        <Button variant="primary" onClick={yetkilendir()}>
+                        <Button variant="primary" onClick={() => yetkilendir()}>
                             Yetki Ver
                         </Button>
                         </Modal.Footer>
                     </Modal>
+                    </div>
             </div>
         )
 }
